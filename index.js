@@ -2,7 +2,6 @@
 const baseHandler = {
   get(target, key) {
     const res = Reflect.get(target, key);
-    // target[key]
     // @todo 依赖收集
     track(target, key);
     return typeof res === "object" ? reactive(res) : res; // 将对象一层一层的拆解开，拆到最底层做响应式
@@ -39,9 +38,8 @@ function computed(fn) {
 
 // 依赖函数
 function effect(fn, options = {}) {
-  console.log(effect);
   // 初始化时执行这个函数
-  let e = creteReactiveEffect(fn, effect); // 自己把自己作为参数传进去
+  let e = creteReactiveEffect(fn, options);
   if (!options.lazy) {
     // 在computed中配置的lazy，不是懒执行
     e();
@@ -49,9 +47,8 @@ function effect(fn, options = {}) {
   return e;
 }
 function creteReactiveEffect(fn, options) {
-  //   console.log(options);
   // 构造固定格式的effect
-  const effect = function effect(...args) {
+  const effect = function (...args) {
     return run(effect, fn, args); // 这里的effect是刚刚定义的effect，转到run函数
   };
   // effect的配置
@@ -123,8 +120,6 @@ function trigger(target, key, info) {
         effects.add(effect);
       }
     });
-    console.log(computedRunner);
-    console.log(effects);
     effects.forEach((effect) => effect());
     computedRunner.forEach((effect) => effect());
   }

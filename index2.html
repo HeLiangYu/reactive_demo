@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <button id="btn">点击增加</button>
+</body>
+<script src="./index2.js"></script>
+<script>
+    const app = document.getElementById('app');
+    const btn = document.getElementById('btn');
+
+    const o = {
+        name: 'jaka',
+        age: 12,
+        p: {
+            size: 9
+        }
+    }
+
+    const obj = reactive(o);
+
+    const double = computed(() => obj.age * 2);
+    const double2 = computed(() => obj.p.size + 6)
+
+    effect(() => {
+        app.innerHTML = `name:${obj.name}, age:${obj.age}, age-double:${double.value}, p.size:${obj.p.size}, p.size-double:${double2
+        .value}`
+    });
+    // effect(() => {
+    //     app.innerHTML = `name:${obj.name}, age:${obj.age}, p.size:${obj.p.size}`
+    // });
+    btn.addEventListener('click', () => {
+        obj.age++;
+        obj.p.size--;
+    })
+</script>
+
+</html>
