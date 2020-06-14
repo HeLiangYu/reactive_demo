@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <button id='btn'>点击</button>
+</body>
+<script src="./index.js"></script>
+<script>
+    const btn = document.getElementById('btn');
+    const app = document.getElementById('app')
+
+    const o = {
+        name: 'lili',
+        age: 1,
+        lp: {
+            o: 1
+        }
+    }
+
+    const obj = reactive(o);
+    const double = computed(() => obj.lp.o * 2)
+
+    effect(() => {
+        app.innerHTML = `<h1>${obj.name},${obj.age}, ${obj.lp.o}, ${double.value}</h1>`
+    });
+
+    btn.addEventListener('click', () => {
+        obj.lp.o++;
+    })
+</script>
+
+</html>
